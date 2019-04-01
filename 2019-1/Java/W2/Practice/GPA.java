@@ -1,4 +1,4 @@
-package Practice;
+package W2.Practice;
 import java.util.Scanner;
 
 public class GPA {
