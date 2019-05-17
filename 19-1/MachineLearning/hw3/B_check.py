@@ -1,7 +1,6 @@
 import numpy as np
 from utils.Answer import evaluation_test2
 
-
 label = np.array([[0, 0, 1, 0, 1, 0, 0, 1, 1, 0],                                   # Q1
                 [0, 1, 1, 0, 1, 1, 1, 0, 0, 0],                                     # Q2
                 [1, 1, 1, 1, 0, 0, 0, 0, 1, 0],                                     # Q3
@@ -21,14 +20,14 @@ result = evaluation_test2(label, hypo, at=5)
 
 real_result = {}
 real_result['MAP  @5'] = 0.123000
-real_result['nDCG @5'] = 0.505748
+real_result['nDCG @5'] = 0.239278
 
 for key in result.keys():
     print('your: ', key, '\t:\t %.6f' % result[key], 'Answer: ', key, '\t:\t %.6f' % real_result[key])
 
 real_result = {}
 real_result['MAP  @7'] = 0.229508
-real_result['nDCG @7'] = 0.543057
+real_result['nDCG @7'] = 0.400956
 
 result = evaluation_test2(label, hypo, at=7)
 

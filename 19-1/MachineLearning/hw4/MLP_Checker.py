@@ -28,6 +28,7 @@ print('===== ReLU Check =====')
 """
 The results should be exactly same as below:
 결과는 아래와 일치해야 합니다:
+
 Forward: 
  [1. 0. 3.]
 Backward: 
@@ -45,6 +46,7 @@ print('===== Sigmoid Check =====')
 """
 The results should be exactly same as below:
 결과는 아래와 일치해야 합니다:
+
 Forward: 
  [[0.26894142 0.88079708 0.62245933]
  [0.5        0.47502081 0.52497919]]
@@ -65,21 +67,25 @@ print('===== InputLayer Check =====')
 """
 The results should be exactly same as below:
 결과는 아래와 일치해야 합니다:
+
 Forward: 
- [[0.69405863 0.67114958]
- [0.41846232 0.44521992]]
+ [[2. 0.]
+ [3. 0.]]
 dW: 
- [[ 1. -3.]
- [-3. 10.]
- [-2.  6.]]
+ [[ 1.  0.]
+ [-3.  0.]
+ [-2.  0.]]
 db: 
- [-1.  4.]
+ [-1.  0.]
 """
 
 input_layer = InputLayer(3, 2, ReLU)
-input_layer_w = np.array([[1.0, -2.0], [2.0, -1.0], [-3.5, -0.5]])
-input_layer_b = np.array([1.0, -1.0])
-temp6 = np.array([[-1, 3, 2], [0.0, 1.0, 0.0]])
+input_layer.W = np.array([[-2.0, -2.0],
+                          [2.0, -1.0],
+                          [-3.5, -0.5]])
+input_layer.b = np.array([1.0, -1.0])
+temp6 = np.array([[-1, 3, 2],
+                  [0.0, 1.0, 0.0]])
 temp7 = np.array([[-1, 3], [0.0, 1.0]])
 print('Forward: \n', input_layer.forward(temp6))
 input_layer.backward(temp7)
@@ -91,9 +97,13 @@ print('===== HiddenLayer Check =====')
 """
 The results should be exactly same as below:
 결과는 아래와 일치해야 합니다:
+
 Forward: 
- [[0.22614135 0.        ]
- [0.29075415 0.06672439]]
+ [[1.03 0.  ]
+ [0.   0.  ]]
+Backward: 
+ [[ 2.   -0.01]
+ [ 1.25 -1.  ]]
 dW: 
  [[ 1.  0.]
  [-3.  1.]]
@@ -101,12 +111,15 @@ db:
  [-1.  1.]
 """
 hidden_layer = HiddenLayer(2, 2)
-hidden_layer_w = np.array([[-5.0, -1.25], [0.01, -10.0]])
-hidden_layer_b = np.array([-10, 1.0])
-temp6 = np.array([[-1, 3], [0.0, 1.0]])
-temp7 = np.array([[-1, 3], [0.0, 1.0]])
+hidden_layer.W = np.array([[-2.0, 1.25],
+                           [0.01, -1.0]])
+hidden_layer.b = np.array([-1.0, 1.0])
+temp6 = np.array([[-1, 3],
+                  [0.0, 1.0]])
+temp7 = np.array([[-1, 3],
+                  [0.0, 1.0]])
 print('Forward: \n', hidden_layer.forward(temp6))
-hidden_layer.backward(temp7)
+print('Backward: \n', hidden_layer.backward(temp7))
 print('dW: \n', hidden_layer.dW)
 print('db: \n', hidden_layer.db)
 print()
@@ -115,6 +128,7 @@ print('===== SigmoidOutputLayer Check =====')
 """
 The results should be exactly same as below:
 결과는 아래와 일치해야 합니다:
+
 Binary Cross-entropy Loss: 
  15.581616346746953
 Predict: 
@@ -154,8 +168,9 @@ print('===== SoftmaxOutputLayer Check =====')
 """
 The results should be exactly same as below:
 결과는 아래와 일치해야 합니다:
+
 Cross-entropy loss: 
- 9.210340371956184
+ 56.797098960473136
 Predict: 
  [[0.03511903 0.25949646 0.70538451]
  [0.00108758 0.00270191 0.99621051]]
@@ -177,7 +192,7 @@ softmax_output_layer.W = np.array([[1.12, -2.34, 3.12], [-1, 0.5, -0.13], [1.1, 
 softmax_output_layer.b = np.array([-1, 1, 2])
 
 temp_y_hat = np.array([[0, 1, 0], [1, 0, 0], [0, 0, 1]])
-temp_y = np.array([0.5, 0.0, 0.1])
+temp_y = np.array([[0.5, 0.0, 0.1], [0.3, 0.2, 2.1], [3.5, 1.0, 1.1]])
 print('Cross-entropy loss: \n', softmax_output_layer.ce_loss(temp_y_hat, temp_y))
 
 temp8 = np.array([[0, 0, 0], [-1, 1, 0.5]])
