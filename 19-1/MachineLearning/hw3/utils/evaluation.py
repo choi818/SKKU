@@ -6,7 +6,14 @@ def Accuracy(label, pred):
     # TODO : Complete the code to calculate the accuracy for prediction.
     #         you can erase the code. (Acc = 0.)
     # ========================= EDIT HERE =========================
+    if len(label.shape) == 1:
+        label = np.expand_dims(label, 1)
+    if len(pred.shape) == 1:
+        pred = np.expand_dims(pred, 1)
 
+    total = label.shape[0]
+    correct = len(np.where(label==pred)[0])
+    Acc = correct / total
     # =============================================================
     return Acc
 
@@ -18,7 +25,21 @@ def Precision(label, pred):
     #         you can erase the code. (precision = 0.)
     #         Notice that, if you encounter the divide zero, return 1
     # ========================= EDIT HERE =========================
+    if len(label.shape) == 1:
+        label = np.expand_dims(label, 1)
+    if len(pred.shape) == 1:
+        pred = np.expand_dims(pred, 1)
 
+    retrieved = len(np.where(pred == 1)[0])
+    if retrieved == 0:
+        return 1
+    
+    true_positive = 0
+    for i in range(len(label)):
+        if label[i] == 1 and pred[i] == 1:
+            true_positive += 1
+    
+    precision = true_positive / retrieved
     # =============================================================
     return precision
 
@@ -30,7 +51,21 @@ def Recall(label, pred):
     #         you can erase the code. (recall = 0.)
     #         Notice that, if you encounter the divide zero, return 1
     # ========================= EDIT HERE =========================
+    if len(label.shape) == 1:
+        label = np.expand_dims(label, 1)
+    if len(pred.shape) == 1:
+        pred = np.expand_dims(pred, 1)
 
+    relevant = len(np.where(label == 1)[0])
+    if relevant == 0:
+        return 1
+    
+    true_positive = 0
+    for i in range(len(label)):
+        if label[i] == 1 and pred[i] == 1:
+            true_positive += 1
+    
+    recall = true_positive / relevant
     # =============================================================
     return recall
 
@@ -41,7 +76,13 @@ def F_measure(label, pred):
     #         you can erase the code. (F_score = 0.)
     #         Notice that, if you encounter the divide zero, return 1
     # ========================= EDIT HERE =========================
+    precision = Precision(label, pred)
+    recall = Recall(label, pred)
 
+    if precision + recall == 0:
+        return 1
+    
+    F_score = (2 * precision * recall) / (precision + recall)
     # =============================================================
     return F_score
 

@@ -15,10 +15,10 @@ perceptron = Perceptron(num_features)
 # Try one of two train algorithm at a time (stochastic or batch)
 # Test acc. should be 1.0 at both case
 
-learning_rate = None
+learning_rate = 0.001
 
-# perceptron.stochastic_train(x_train, y_train, learning_rate)
-perceptron.batch_train(x_train, y_train, learning_rate)
+perceptron.stochastic_train(x_train, y_train, learning_rate)
+# perceptron.batch_train(x_train, y_train, learning_rate)
 
 # =========================================
 

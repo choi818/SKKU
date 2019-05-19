@@ -45,11 +45,11 @@ class MLP:
 
 
 # =============== EDIT HERE ===============
-hidden_1 = None
-hidden_2 = None
-num_epochs = None
-learning_rate = None
-print_every = None
+hidden_1 = 15 #None
+hidden_2 = 10 #None
+num_epochs = 500 #None
+learning_rate = 36e-5 #None
+print_every = 20 #None
 # =========================================
 
 batch_size = 100

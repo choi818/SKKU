@@ -7,7 +7,7 @@ from utils.utils import load_rank_data
 
 np.random.seed(503)
 # ===  You can setting here  ===
-DATA_NAME = 'Movielens'
+DATA_NAME = 'Product'
 # ==============================
 assert DATA_NAME in ['Product', 'Movielens']
 

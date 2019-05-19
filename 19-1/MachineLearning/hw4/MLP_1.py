@@ -39,9 +39,9 @@ class MLP:
 
 
 # =============== EDIT HERE ===============
-num_epochs = None
-learning_rate = None
-print_every = None
+num_epochs = 10000
+learning_rate = 5e-1
+print_every = 1000
 # =========================================
 
 x = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])

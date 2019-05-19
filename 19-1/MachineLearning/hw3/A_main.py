@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 np.random.seed(503)
 
 # ========  You can setting =========
-DATA_NAME = 'Contracept'
+DATA_NAME = 'Yeast'
 #====================================
 
 # HYPERPARAMETERS

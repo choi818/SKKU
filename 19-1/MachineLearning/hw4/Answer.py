@@ -43,8 +43,9 @@ def sign(z):
     sign_z = None
     # =============== EDIT HERE ===============
 
-
-
+    sign_z = np.copy(z)
+    sign_z[sign_z >= 0] = 1
+    sign_z[sign_z < 0] = -1
 
     # =========================================
     return sign_z
@@ -70,9 +71,8 @@ class Perceptron:
             x = np.expand_dims(x, 0)
         # =============== EDIT HERE ===============
 
-
-
-
+        out = x.dot(self.W) + self.b
+        out = sign(out)
 
         # =========================================
         return out
@@ -100,11 +100,16 @@ class Perceptron:
 
             for i in range(num_data):
             # =============== EDIT HERE ===============
-                pass
+                
+                y_hat = self.forward(x)
+                num_features = self.W.shape[0]
 
+                if (y_hat[i] != y[i]):
+                    quit = False
 
-
-
+                    for j in range(num_features):
+                        self.W[j] -= learning_rate * y[j] * x[i][j]
+            
             # =========================================
             if quit:
                 break
@@ -136,12 +141,22 @@ class Perceptron:
             quit = True
             for i in range(num_data):
             # =============== EDIT HERE ===============
-                pass
+                
+                y_hat = self.forward(x)
+                num_features = self.W.shape[0]
+                S = []
+                Y = []
 
+                if y_hat[i] != y[i]:
+                    quit = False
+                    S.append(x[i])
+                    Y.append(y[i])
 
+                    dW = np.dot(np.array(S).T, Y) / num_features
+                    db = np.sum(Y, axis=0) / len(Y)
 
-
-
+                    self.W += learning_rate * np.sum(dW)
+                    self.b += learning_rate * db
 
             # =========================================
             if quit:
@@ -187,10 +202,9 @@ class ReLU:
         out = None
         # =============== EDIT HERE ===============
 
-
-
-
-
+        self.zero_mask = (z <= 0)
+        out = np.copy(z)
+        out[self.zero_mask] = 0
 
         # =========================================
         return out
@@ -212,9 +226,8 @@ class ReLU:
         dz = None
         # =============== EDIT HERE ===============
 
-
-
-
+        d_prev[self.zero_mask] = 0
+        dz = d_prev
 
         # =========================================
         return dz
@@ -242,9 +255,7 @@ class Sigmoid:
         self.out = None
         # =============== EDIT HERE ===============
 
-
-
-
+        self.out = 1 / (1 + np.exp(-z))
 
         # =========================================
         return self.out
@@ -265,9 +276,7 @@ class Sigmoid:
         dz = None
         # =============== EDIT HERE ===============
 
-
-
-
+        dz = d_prev * (1.0 - self.out) * self.out
 
         # =========================================
         return dz
@@ -317,9 +326,9 @@ class InputLayer:
         self.out = None
         # =============== EDIT HERE ===============
 
-
-
-
+        self.x = x
+        z = np.dot(self.x, self.W) + self.b
+        self.out = self.act.forward(z)
 
         # =========================================
         return self.out
@@ -343,11 +352,10 @@ class InputLayer:
         self.db = None
         # =============== EDIT HERE ===============
 
-
-
-
-
-
+        dz = self.act.backward(d_prev)
+        self.dW = np.dot(self.x.T, dz)
+        self.db = np.sum(dz, axis=0)
+        
         # =========================================
 
 class SigmoidOutputLayer:
@@ -399,10 +407,8 @@ class SigmoidOutputLayer:
         bce_loss = None
         # =============== EDIT HERE ===============
 
-
-
-
-
+        bce_loss = -np.mean(np.multiply(y_hat, np.log(y + eps)) + np.multiply((1 - y_hat), np.log(1 - y + eps)))
+        
         # =========================================
         return bce_loss
 
@@ -441,10 +447,10 @@ class SigmoidOutputLayer:
         dx = None
         # =============== EDIT HERE ===============
 
-
-
-
-
+        dz = (self.y_hat - self.y) / batch_size * d_prev
+        dx = np.dot(dz, self.W.T)
+        self.dW = np.dot(self.x.T, dz)
+        self.db = np.sum(dz, axis=0)
 
         # =========================================
 
@@ -477,9 +483,9 @@ class HiddenLayer:
         self.out = None
         # =============== EDIT HERE ===============
 
-
-
-
+        self.x = x
+        z = np.dot(self.x, self.W) + self.b
+        self.out = self.act.forward(z)
 
         # =========================================
         return self.out
@@ -504,11 +510,10 @@ class HiddenLayer:
         self.db = None
         # =============== EDIT HERE ===============
 
-
-
-
-
-
+        dz = self.act.backward(d_prev)
+        dx = np.dot(d_prev, self.W.T)
+        self.dW = np.dot(self.x.T, dz)
+        self.db = np.sum(dz, axis=0)
 
         # =========================================
         return dx
@@ -560,10 +565,7 @@ class SoftmaxOutputLayer:
         ce_loss = None
         # =============== EDIT HERE ===============
 
-
-
-
-
+        ce_loss = -np.sum(np.log(y_hat + eps) * y) / y.shape[0]
 
         # =========================================
         return ce_loss
@@ -582,9 +584,9 @@ class SoftmaxOutputLayer:
         y_hat = None
         # =============== EDIT HERE ===============
 
-
-
-
+        z = np.dot(x, self.W) + self.b
+        y_hat = softmax(z)
+        
         # =========================================
         return y_hat
 
@@ -606,10 +608,10 @@ class SoftmaxOutputLayer:
         dx = None
         # =============== EDIT HERE ===============
 
-
-
-
-
+        dz = (self.y_hat - self.y) / batch_size * d_prev
+        dx = np.dot(dz, self.W.T)
+        self.dW = np.dot(self.x.T, dz)
+        self.db = np.sum(dz, axis=0)
 
         # =========================================
         return dx
