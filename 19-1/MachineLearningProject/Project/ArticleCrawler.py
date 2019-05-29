@@ -84,7 +84,7 @@ class ArticleCrawler(object):
         print(category_name + " PID: " + str(os.getpid()))
 
         # 각 카테고리 기사를 저장할 CSV
-        file = open(category_name + '_articles' + '.csv', 'w', encoding='euc_kr', newline='')
+        file = open('Articles_' + category_name + '.csv', 'w', encoding='euc_kr', newline='')
         wcsv = csv.writer(file)
 
         # 기사 URL 형식
